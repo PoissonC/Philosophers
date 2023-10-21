@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 18:26:15 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/21 20:38:54 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/21 20:46:36 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,21 @@ int	get_time(t_philo *p)
 }
 
 void	*act(t_philo *p)
+{
+	static int	i;
+	int			idx;
+
+	pthread_mutex_lock(&(p->get_idx));
+	idx = i++;
+	pthread_mutex_unlock(&(p->get_idx));
+}
+
+void	*end_program(t_philo *p)
+{
+
+}
+
+int		is_alive(t_philo *p)
 {
 
 }

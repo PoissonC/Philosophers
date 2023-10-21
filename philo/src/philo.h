@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:14:06 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/21 20:39:43 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/21 20:46:44 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_men
 	pthread_t		thr;
 	pthread_mutex_t	act;
 	int				eats_cur;
+	int				is_alive;
 }				t_men;
 
 typedef struct s_philo
@@ -59,6 +60,7 @@ int		create_philos(t_philo *p);
 int		get_time(t_philo *p);
 void	*act(t_philo *p);
 void	*end_program(t_philo *p);
+int		is_alive(t_philo *p);
 
 //destroy.c
 void	destroy_forks(t_philo *p, int nums);
