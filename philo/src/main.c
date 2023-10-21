@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:34:12 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/21 20:07:06 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/21 20:22:34 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ int	main(int argc, char **argv)
 		pthread_join(p.philos[i].thr, NULL);
 		i++;
 	}
+	//每一毫秒檢查一次是否結束程式，可呼叫其他thread
 	destroy_forks(&p, p.philo_num);
 	destroy_men(&p, p.philo_num);
-	free(p.philos);
 	return (0);
 }
 
