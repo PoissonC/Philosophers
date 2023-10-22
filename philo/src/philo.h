@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:14:06 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/21 20:46:44 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/22 19:18:23 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,24 @@ typedef struct s_men
 {
 	int				last_eat;
 	pthread_t		thr;
-	pthread_mutex_t	act;
 	int				eats_cur;
 	int				is_alive;
+	int				check;
+	pthread_mutex_t	acting;
 }				t_men;
 
 typedef struct s_philo
 {
 	int				philo_num;
+	int				fini_num;
 	int				time_die;
 	int				time_eat;
 	int				time_sleep;
 	int				times_eat;
-	int				times_eat_cur;
+	int 			is_end;
 	struct timeval	start_tv;
 	pthread_mutex_t	*fork;
-	pthread_mutex_t	get_idx;
+	pthread_mutex_t	for_t_philo;
 	t_men			*philos;
 }			t_philo;
 
@@ -54,26 +56,31 @@ int		parsing(t_philo *p, char **input, int argc);
 //create.c
 int		create_forks(t_philo *p);
 int		create_men(t_philo *p);
-int		create_philos(t_philo *p);
+int		start_philos(t_philo *p);
 
 //utils.c
 int		get_time(t_philo *p);
-void	*act(t_philo *p);
-void	*end_program(t_philo *p);
-int		is_alive(t_philo *p);
+void	*checker(void *philo);
+int		check_end(t_philo *p);
+int		is_end(t_philo *p, int i);
+void	wait_to_die(t_philo *p, int idx);
+
+//utils2.c
+int		check_die(t_philo *p, int idx);
+int		get_fork_edge(t_philo *p, int idx);
+int		get_fork_mid(t_philo *p, int idx);
 
 //destroy.c
 void	destroy_forks(t_philo *p, int nums);
 void	destroy_men(t_philo *p, int nums);
-void	detach_philos(t_philo *p, int nums);
 
 //main.c
-void	*philos(t_philo *p);
+void	*philos(void *philo);
 
 //action.c
-void	die(t_philo *p, int idx);
 void	eat(t_philo *p, int idx);
-void	sleep(t_philo *p, int idx);
-void	think(t_philo *p, int idx);
-void	get_fork(t_philo *p, int idx);
+void	sleep_think(t_philo *p, int idx);
+void	die(t_philo *p, int idx);
+int		get_fork(t_philo *p, int idx);
+void	put_fork(t_philo *p, int idx);
 #endif

@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:36:12 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/21 20:03:51 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/22 19:21:16 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,20 +85,20 @@ int	parsing(t_philo *p, char **input, int argc)
 	p->time_die = ft_atoi(input[2]);
 	p->time_eat = ft_atoi(input[3]);
 	p->time_sleep = ft_atoi(input[4]);
-	p->times_eat_cur = 0;
+	p->fini_num = 0;
+	p->is_end = 0;
 	if (argc == 6)
 		p->times_eat = ft_atoi(input[5]);
 	else if (argc == 5)
 		p->times_eat = -1;
-	p->start_tv.tv_sec = 0;
-	p->start_tv.tv_usec = 0;
-	if (pthread_mutex_init(&(p->get_idx), NULL) != 0)
+	gettimeofday(&(p->start_tv), NULL);
+	if (pthread_mutex_init(&(p->for_t_philo), NULL) != 0)
 		return (1);
 	if (create_forks(p))
 		return (1);
 	if (create_men(p))
 		return (1);
-	if (create_philos(p))
+	if (start_philos(p))
 		return (1);
 	return (0);
 }

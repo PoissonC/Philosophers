@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 20:02:46 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/21 20:11:36 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/22 14:03:35 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	destroy_men(t_philo *p, int nums)
 	i = 0;
 	while (i < nums)
 	{
-		pthread_mutex_destroy(&(p->philos[i].act));
+		pthread_mutex_destroy(&(p->philos[i].acting));
 		i++;
 	}
 	free(p->philos);
@@ -48,5 +48,4 @@ void	detach_philos(t_philo *p, int nums)
 		pthread_detach(p->philos[i].thr);
 		i++;
 	}
-	free(p->philos);
 }

@@ -3,7 +3,7 @@ CC 			= cc
 CFLAGS 		= -Wall -Wextra -Werror
 # Sources
 SRC_PATH	=	src/
-SRC			=	main.c parsing.c utils.c create.c action.c
+SRC			=	main.c parsing.c utils.c utils2.c create.c action.c destory.c
 SRCS		= $(addprefix $(SRC_PATH), $(SRC))
 # Objects
 OBJ_PATH	= 	src/

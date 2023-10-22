@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:34:12 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/21 20:22:34 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/22 20:37:43 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,28 +27,33 @@ int	main(int argc, char **argv)
 		pthread_join(p.philos[i].thr, NULL);
 		i++;
 	}
-	//每一毫秒檢查一次是否結束程式，可呼叫其他thread
 	destroy_forks(&p, p.philo_num);
 	destroy_men(&p, p.philo_num);
 	return (0);
 }
 
-void	*philos(t_philo *p)
+void	*philos(void *philo)
 {
 	static int	i;
 	int			idx;
+	pthread_t	thr;
+	t_philo		*p;
 
-	pthread_mutex_lock(&(p->get_idx));
+	p = philo;
+	pthread_mutex_lock(&(p->for_t_philo));
 	idx = i++;
-	pthread_mutex_unlock(&(p->get_idx));
+	pthread_mutex_unlock(&(p->for_t_philo));
 	p->philos[idx].last_eat = get_time(p);
-	while (1)
+	if (pthread_create(&thr, NULL, checker, p) != 0)
 	{
-		if (get_time(p) - p->philos[idx].last_eat > p->time_die)
-		{
-			die(p, idx);
-			return (NULL);
-		}
-		usleep(1000);
+		pthread_mutex_lock(&(p->for_t_philo));
+		p->is_end = 1;
+		pthread_mutex_unlock(&(p->for_t_philo));
 	}
+	if (idx & 1)
+		usleep(p->time_eat * 900);
+	eat(p, idx);
+	pthread_join(thr, NULL);
+	pthread_mutex_destroy(&(p->philos->acting));
+	return (NULL);
 }
