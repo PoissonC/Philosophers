@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yu <yu@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 18:32:46 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/22 15:44:36 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/23 10:26:24 by yu               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	create_men(t_philo *p)
 	while (i < p->philo_num)
 	{
 		p->philos[i].eats_cur = 0;
-		p->philos[i].is_alive = 1;
 		p->philos[i].check = 0;
 		if (pthread_mutex_init(p->fork + i, NULL) != 0)
 		{

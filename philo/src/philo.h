@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yu <yu@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:14:06 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/22 19:18:23 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/23 10:25:05 by yu               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ typedef struct s_men
 	int				last_eat;
 	pthread_t		thr;
 	int				eats_cur;
-	int				is_alive;
 	int				check;
 	pthread_mutex_t	acting;
 }				t_men;
@@ -63,12 +62,12 @@ int		get_time(t_philo *p);
 void	*checker(void *philo);
 int		check_end(t_philo *p);
 int		is_end(t_philo *p, int i);
-void	wait_to_die(t_philo *p, int idx);
+void	wait_to_die(t_philo *p);
 
 //utils2.c
-int		check_die(t_philo *p, int idx);
 int		get_fork_edge(t_philo *p, int idx);
 int		get_fork_mid(t_philo *p, int idx);
+void	set_end(t_philo *p);
 
 //destroy.c
 void	destroy_forks(t_philo *p, int nums);
