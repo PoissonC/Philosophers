@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yu <yu@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 18:23:48 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/23 11:18:49 by yu               ###   ########.fr       */
+/*   Updated: 2023/10/24 20:02:18 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 int	get_fork(t_philo *p, int idx)
 {
-	if (check_end(p))
-		return (1);
 	if (idx == p->philo_num - 1)
 	{
 		if (get_fork_edge(p, idx))
@@ -47,16 +45,14 @@ void	eat(t_philo *p, int idx)
 {
 	if (get_fork(p, idx) == 1)
 		return ;
-	if (check_end(p))
+	if (checker(p, idx))
 	{
 		put_fork(p, idx);
 		return ;
 	}
-	pthread_mutex_lock(&(p->philos[idx].acting));
 	printf("%d %d  is eating\n", get_time(p), idx);
 	p->philos[idx].eats_cur++;
-	p->philos[idx].last_eat = get_time(p);
-	pthread_mutex_unlock(&(p->philos[idx].acting));
+	die_manage(p, idx);
 	usleep(p->time_eat * 1000);
 	put_fork(p, idx);
 	sleep_think(p, idx);
@@ -64,11 +60,11 @@ void	eat(t_philo *p, int idx)
 
 void	sleep_think(t_philo *p, int idx)
 {
-	if (check_end(p))
+	if (checker(p, idx))
 		return ;
 	printf("%d %d is sleeping\n", get_time(p), idx);
 	usleep(p->time_sleep * 1000);
-	if (check_end(p))
+	if (checker(p, idx))
 		return ;
 	printf("%d %d is thinking\n", get_time(p), idx);
 	eat(p, idx);
@@ -76,8 +72,7 @@ void	sleep_think(t_philo *p, int idx)
 
 void	die(t_philo *p, int idx)
 {
-	if (check_end(p))
-		return ;
-	set_end(p);
 	printf("%d %d died\n", get_time(p), idx);
+	p->is_end = 1;
+	pthread_mutex_unlock(&(p->for_t_philo));
 }

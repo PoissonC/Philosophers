@@ -6,13 +6,13 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:36:12 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/22 19:21:16 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/24 19:53:10 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-size_t	skipzero(char **input, int i[])
+static size_t	skipzero(char **input, int i[])
 {
 	size_t	len;
 	size_t	j;
@@ -33,7 +33,7 @@ size_t	skipzero(char **input, int i[])
 	return (len - j);
 }
 
-int	isover(char **input, int len)
+static int	isover(char **input, int len)
 {
 	int		i[3];
 
@@ -45,16 +45,16 @@ int	isover(char **input, int len)
 		if (len > 11)
 			return (1);
 		if (len == 10 && i[1] == 1)
-			if (ft_strncmp(input[i[0]] + i[2], "2147483648", 10) > 0)
+			if (ft_strncmp(input[i[0]] + i[2], "2147483648", 11) > 0)
 				return (1);
 		if (len == 10 && i[1] == 0)
-			if (ft_strncmp(input[i[0]] + i[2], "2147483647", 10) > 0)
+			if (ft_strncmp(input[i[0]] + i[2], "2147483647", 11) > 0)
 				return (1);
 	}
 	return (0);
 }
 
-int	ckdigit(char **input, int len)
+static int	ckdigit(char **input, int len)
 {
 	int	i;
 	int	j;
@@ -75,6 +75,17 @@ int	ckdigit(char **input, int len)
 	return (0);
 }
 
+static void	init(t_philo *p)
+{
+	p->fini_num = 0;
+	p->is_end = 0;
+	p->idx = NULL;
+	p->map = NULL;
+	p->last_eat = NULL;
+	p->philos = NULL;
+	gettimeofday(&(p->start_tv), NULL);
+}
+
 int	parsing(t_philo *p, char **input, int argc)
 {
 	if (ckdigit(input + 1, argc - 1))
@@ -85,13 +96,11 @@ int	parsing(t_philo *p, char **input, int argc)
 	p->time_die = ft_atoi(input[2]);
 	p->time_eat = ft_atoi(input[3]);
 	p->time_sleep = ft_atoi(input[4]);
-	p->fini_num = 0;
-	p->is_end = 0;
 	if (argc == 6)
 		p->times_eat = ft_atoi(input[5]);
 	else if (argc == 5)
 		p->times_eat = -1;
-	gettimeofday(&(p->start_tv), NULL);
+	init(p);
 	if (pthread_mutex_init(&(p->for_t_philo), NULL) != 0)
 		return (1);
 	if (create_forks(p))

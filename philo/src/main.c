@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yu <yu@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:34:12 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/23 10:35:28 by yu               ###   ########.fr       */
+/*   Updated: 2023/10/24 19:54:41 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ int	main(int argc, char **argv)
 		pthread_join(p.philos[i].thr, NULL);
 		i++;
 	}
-	destroy_forks(&p, p.philo_num);
-	destroy_men(&p, p.philo_num);
+	destroy_all(&p);
 	return (0);
 }
 
@@ -36,24 +35,14 @@ void	*philos(void *philo)
 {
 	static int	i;
 	int			idx;
-	pthread_t	thr;
 	t_philo		*p;
 
 	p = philo;
 	pthread_mutex_lock(&(p->for_t_philo));
 	idx = i++;
 	pthread_mutex_unlock(&(p->for_t_philo));
-	p->philos[idx].last_eat = get_time(p);
-	if (pthread_create(&thr, NULL, checker, p) != 0)
-	{
-		pthread_mutex_lock(&(p->for_t_philo));
-		p->is_end = 1;
-		pthread_mutex_unlock(&(p->for_t_philo));
-	}
 	if (idx & 1)
 		usleep(p->time_eat * 900);
 	eat(p, idx);
-	pthread_join(thr, NULL);
-	pthread_mutex_destroy(&(p->philos->acting));
 	return (NULL);
 }

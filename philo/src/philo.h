@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yu <yu@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:14:06 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/23 10:25:05 by yu               ###   ########.fr       */
+/*   Updated: 2023/10/24 19:24:39 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@
 
 typedef struct s_men
 {
-	int				last_eat;
-	pthread_t		thr;
-	int				eats_cur;
-	int				check;
-	pthread_mutex_t	acting;
+	pthread_t	thr;
+	int			eats_cur;
+	int			check;
 }				t_men;
 
 typedef struct s_philo
@@ -34,7 +32,10 @@ typedef struct s_philo
 	int				time_eat;
 	int				time_sleep;
 	int				times_eat;
-	int 			is_end;
+	int				*last_eat;
+	int				*idx;
+	int				*map;
+	int				is_end;
 	struct timeval	start_tv;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	for_t_philo;
@@ -57,21 +58,19 @@ int		create_forks(t_philo *p);
 int		create_men(t_philo *p);
 int		start_philos(t_philo *p);
 
-//utils.c
-int		get_time(t_philo *p);
-void	*checker(void *philo);
-int		check_end(t_philo *p);
-int		is_end(t_philo *p, int i);
-void	wait_to_die(t_philo *p);
-
-//utils2.c
-int		get_fork_edge(t_philo *p, int idx);
-int		get_fork_mid(t_philo *p, int idx);
+//checker.c
+int		checker(t_philo *philo, int idx);
 void	set_end(t_philo *p);
 
-//destroy.c
+//utils.c
+int		get_fork_edge(t_philo *p, int idx);
+int		get_fork_mid(t_philo *p, int idx);
+int		get_time(t_philo *p);
+
+//manger.c
 void	destroy_forks(t_philo *p, int nums);
-void	destroy_men(t_philo *p, int nums);
+void	destroy_all(t_philo *p);
+void	die_manage(t_philo *p, int idx);
 
 //main.c
 void	*philos(void *philo);
