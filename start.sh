@@ -39,6 +39,7 @@ test_one ()
         echo "\e[92m[+] Test #1 Succeeded !\e[0m"
     else
         echo "\e[91m[+] Test #1 Failed !\e[0m"
+		echo $output
         error_log $1 "Test #1" "Given 4 310 200 100 arguments to $1, a philosopher should die !"
     fi
     rm -rf "./log_$1"

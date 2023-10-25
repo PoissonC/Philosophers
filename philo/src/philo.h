@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yu <yu@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:14:06 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/24 19:24:39 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/25 13:50:17 by yu               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ typedef struct s_men
 	int			check;
 }				t_men;
 
+typedef struct s_manage
+{
+	int	idx;
+	int	die_time;
+}				t_manage;
+
 typedef struct s_philo
 {
 	int				philo_num;
@@ -32,9 +38,7 @@ typedef struct s_philo
 	int				time_eat;
 	int				time_sleep;
 	int				times_eat;
-	int				*last_eat;
-	int				*idx;
-	int				*map;
+	t_manage		*m;
 	int				is_end;
 	struct timeval	start_tv;
 	pthread_mutex_t	*fork;
@@ -59,8 +63,8 @@ int		create_men(t_philo *p);
 int		start_philos(t_philo *p);
 
 //checker.c
-int		checker(t_philo *philo, int idx);
-void	set_end(t_philo *p);
+int		checker(t_philo *philo);
+void	msleep(t_philo *p, int m_s);
 
 //utils.c
 int		get_fork_edge(t_philo *p, int idx);
@@ -70,7 +74,7 @@ int		get_time(t_philo *p);
 //manger.c
 void	destroy_forks(t_philo *p, int nums);
 void	destroy_all(t_philo *p);
-void	die_manage(t_philo *p, int idx);
+void	push_back(t_philo *p, int idx);
 
 //main.c
 void	*philos(void *philo);
@@ -78,7 +82,6 @@ void	*philos(void *philo);
 //action.c
 void	eat(t_philo *p, int idx);
 void	sleep_think(t_philo *p, int idx);
-void	die(t_philo *p, int idx);
 int		get_fork(t_philo *p, int idx);
 void	put_fork(t_philo *p, int idx);
 #endif

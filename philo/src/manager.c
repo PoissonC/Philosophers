@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manager.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yu <yu@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 20:02:46 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/24 20:36:46 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/25 14:14:38 by yu               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,10 @@ void	destroy_forks(t_philo *p, int nums)
 void	destroy_all(t_philo *p)
 {
 	destroy_forks(p, p->philo_num);
-	if (p->last_eat)
+	if (p->m)
 	{
-		free(p->last_eat);
-		p->last_eat = NULL;
-	}
-	if (p->idx)
-	{
-		free(p->idx);
-		p->idx = NULL;
-	}
-	if (p->map)
-	{
-		free(p->map);
-		p->map = NULL;
+		free(p->m);
+		p->m = NULL;
 	}
 	if (p->philos)
 	{
@@ -50,39 +40,27 @@ void	destroy_all(t_philo *p)
 	}
 }
 
-static void	handle()
+void	push_back(t_philo *p, int idx)
 {
-	
-}
+	t_manage	tmp;
+	int			i;
 
-void	die_manage(t_philo *p, int idx)
-{
-	int	tmp;
-	int	i;
-
-	p->last_eat[p->map[idx]] = get_time(p);
-	tmp = p->map[idx];
-	i = idx;
-	while (i < p->philo_num - 1)
-	{
-		p->map[p->idx[i]] = p->map[p->idx[i + 1]];
-		i++;
-	}
-	p->map[i] = tmp;
-	printf("map:\n");
-	for (int i= 0; i< p->philo_num ; i++)
-		printf("%d ",p->map[i]);
-	printf("\n");
-	tmp = p->idx[p->philo_num - 1];
-	i = idx + 1;
+	i = 0;
 	while (i < p->philo_num)
 	{
-		p->idx[i] = p->idx[i - 1];
+		if (idx == p->m[i].idx)
+			break ;
 		i++;
 	}
-	p->idx[idx] = tmp;
-	printf("idx:\n");
-	for (int i= 0; i< p->philo_num ; i++)
-		printf("%d ",p->idx[i]);
-	printf("\n");
+	p->m[i].die_time = get_time(p) + p->time_die;
+	tmp.idx = p->m[i].idx;
+	tmp.die_time = p->m[i].die_time;
+	while (i < p->philo_num - 1)
+	{
+		p->m[i].idx = p->m[i + 1].idx;
+		p->m[i].die_time = p->m[i + 1].die_time;
+		i++;
+	}
+	p->m[i].idx = tmp.idx;
+	p->m[i].die_time = tmp.die_time;
 }

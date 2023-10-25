@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yu <yu@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 18:23:48 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/24 20:02:18 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/25 13:19:49 by yu               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,34 +45,29 @@ void	eat(t_philo *p, int idx)
 {
 	if (get_fork(p, idx) == 1)
 		return ;
-	if (checker(p, idx))
+	if (checker(p))
 	{
 		put_fork(p, idx);
 		return ;
 	}
 	printf("%d %d  is eating\n", get_time(p), idx);
+	pthread_mutex_lock(&(p->for_t_philo));
 	p->philos[idx].eats_cur++;
-	die_manage(p, idx);
-	usleep(p->time_eat * 1000);
+	push_back(p, idx);
+	pthread_mutex_unlock(&(p->for_t_philo));
+	msleep(p, p->time_eat);
 	put_fork(p, idx);
 	sleep_think(p, idx);
 }
 
 void	sleep_think(t_philo *p, int idx)
 {
-	if (checker(p, idx))
+	if (checker(p))
 		return ;
 	printf("%d %d is sleeping\n", get_time(p), idx);
-	usleep(p->time_sleep * 1000);
-	if (checker(p, idx))
+	msleep(p, p->time_sleep);
+	if (checker(p))
 		return ;
 	printf("%d %d is thinking\n", get_time(p), idx);
 	eat(p, idx);
-}
-
-void	die(t_philo *p, int idx)
-{
-	printf("%d %d died\n", get_time(p), idx);
-	p->is_end = 1;
-	pthread_mutex_unlock(&(p->for_t_philo));
 }

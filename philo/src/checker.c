@@ -3,68 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yu <yu@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 18:26:15 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/24 19:56:55 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/25 13:56:15 by yu               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	set_end(t_philo *p)
-{
-	pthread_mutex_lock(&(p->for_t_philo));
-	p->is_end = 1;
-	pthread_mutex_unlock(&(p->for_t_philo));
-}
-
 static int	check_end(t_philo *p)
 {
-	pthread_mutex_lock(&(p->for_t_philo));
 	if (p->is_end)
+		return (1);
+	return (0);
+}
+
+static int	is_end(t_philo *p)
+{
+	int	i;
+
+	i = 0;
+	while (i < p->philo_num)
+	{
+		if (p->times_eat != -1)
+		{
+			if (p->philos[i].eats_cur >= p->times_eat && \
+			p->philos[i].check == 0)
+			{
+				p->philos[i].check = 1;
+				p->fini_num++;
+			}
+			if (p->fini_num == p->philo_num)
+				return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	checker(t_philo *p)
+{
+	pthread_mutex_lock(&(p->for_t_philo));
+	if (check_end(p))
 	{
 		pthread_mutex_unlock(&(p->for_t_philo));
 		return (1);
 	}
-	pthread_mutex_unlock(&(p->for_t_philo));
-	return (0);
-}
-
-static int	is_end(t_philo *p, int idx)
-{
-	pthread_mutex_lock(&(p->for_t_philo));
-	if (p->times_eat != -1)
+	if (is_end(p))
 	{
-		if (p->philos[idx].eats_cur >= p->times_eat && \
-		p->philos[idx].check == 0)
-		{
-			p->philos[idx].check = 1;
-			p->fini_num++;
-		}
-		if (p->fini_num == p->philo_num)
-		{
-			pthread_mutex_unlock(&(p->for_t_philo));
-			return (1);
-		}
-	}
-	pthread_mutex_unlock(&(p->for_t_philo));
-	return (0);
-}
-
-int	checker(t_philo *p, int idx)
-{
-	if (check_end(p))
-		return (1);
-	else if (is_end(p, idx))
-	{
-		set_end(p);
+		p->is_end = 1;
+		pthread_mutex_unlock(&(p->for_t_philo));
 		return (1);
 	}
-	pthread_mutex_lock(&(p->for_t_philo));
-	if (get_time(p) - p->last_eat[p->map[0]] > p->time_die)
+	if (get_time(p) > p->m[0].die_time)
 	{
-		die(p, p->map[0]);
+		printf("%d %d died\n", get_time(p), p->m[0].idx);
+		p->is_end = 1;
+		pthread_mutex_unlock(&(p->for_t_philo));
 		return (1);
 	}
 	pthread_mutex_unlock(&(p->for_t_philo));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yu <yu@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:36:12 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/24 19:53:10 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/25 11:43:55 by yu               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,7 @@ static void	init(t_philo *p)
 {
 	p->fini_num = 0;
 	p->is_end = 0;
-	p->idx = NULL;
-	p->map = NULL;
-	p->last_eat = NULL;
+	p->m = NULL;
 	p->philos = NULL;
 	gettimeofday(&(p->start_tv), NULL);
 }

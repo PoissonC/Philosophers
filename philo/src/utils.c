@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yu <yu@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:49:40 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/24 19:57:58 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/25 14:28:07 by yu               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	wait_to_die(t_philo *p)
 int	get_fork_edge(t_philo *p, int idx)
 {
 	pthread_mutex_lock(p->fork);
-	if (checker(p, idx))
+	if (checker(p))
 	{
 		pthread_mutex_unlock(p->fork);
 		return (1);
@@ -39,7 +39,7 @@ int	get_fork_edge(t_philo *p, int idx)
 		return (1);
 	}
 	pthread_mutex_lock(p->fork + idx);
-	if (checker(p, idx))
+	if (checker(p))
 	{
 		pthread_mutex_unlock(p->fork);
 		pthread_mutex_unlock(p->fork + idx);
@@ -52,14 +52,14 @@ int	get_fork_edge(t_philo *p, int idx)
 int	get_fork_mid(t_philo *p, int idx)
 {
 	pthread_mutex_lock(p->fork + idx);
-	if (checker(p, idx))
+	if (checker(p))
 	{
 		pthread_mutex_unlock(p->fork + idx);
 		return (1);
 	}
 	printf("%d %d has taken a fork\n", get_time(p), idx);
 	pthread_mutex_lock(p->fork + idx + 1);
-	if (checker(p, idx))
+	if (checker(p))
 	{
 		pthread_mutex_unlock(p->fork + idx);
 		pthread_mutex_unlock(p->fork + idx + 1);
@@ -67,6 +67,18 @@ int	get_fork_mid(t_philo *p, int idx)
 	}
 	printf("%d %d has taken a fork\n", get_time(p), idx);
 	return (0);
+}
+
+void	msleep(t_philo *p, int m_s)
+{
+	int	start;
+
+	start = get_time(p);
+	while ((get_time(p) - start) < m_s)
+	{
+		checker(p);
+		usleep(100);
+	}
 }
 
 int	get_time(t_philo *p)
