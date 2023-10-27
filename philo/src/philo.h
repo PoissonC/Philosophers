@@ -6,7 +6,7 @@
 /*   By: yu <yu@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:14:06 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/25 13:50:17 by yu               ###   ########.fr       */
+/*   Updated: 2023/10/26 11:06:08 by yu               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ void	push_back(t_philo *p, int idx);
 void	*philos(void *philo);
 
 //action.c
-void	eat(t_philo *p, int idx);
-void	sleep_think(t_philo *p, int idx);
+int		eat(t_philo *p, int idx);
+int		sleep_think(t_philo *p, int idx);
 int		get_fork(t_philo *p, int idx);
 void	put_fork(t_philo *p, int idx);
 #endif

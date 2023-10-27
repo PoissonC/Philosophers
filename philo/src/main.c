@@ -6,7 +6,7 @@
 /*   By: yu <yu@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:34:12 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/25 12:31:16 by yu               ###   ########.fr       */
+/*   Updated: 2023/10/26 11:07:30 by yu               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ void	*philos(void *philo)
 	pthread_mutex_unlock(&(p->for_t_philo));
 	if (idx & 1)
 		usleep(p->time_eat * 500);
-	eat(p, idx);
-	return (NULL);
+	while (1)
+	{
+		if (eat(p, idx))
+			return (NULL);
+		if (sleep_think(p, idx))
+			return (NULL);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: yu <yu@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 18:23:48 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/25 13:19:49 by yu               ###   ########.fr       */
+/*   Updated: 2023/10/26 11:06:52 by yu               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,33 +41,33 @@ void	put_fork(t_philo *p, int idx)
 	}
 }
 
-void	eat(t_philo *p, int idx)
+int	eat(t_philo *p, int idx)
 {
 	if (get_fork(p, idx) == 1)
-		return ;
+		return (1);
 	if (checker(p))
 	{
 		put_fork(p, idx);
-		return ;
+		return (1);
 	}
-	printf("%d %d  is eating\n", get_time(p), idx);
+	printf("%d %d is eating\n", get_time(p), idx);
 	pthread_mutex_lock(&(p->for_t_philo));
 	p->philos[idx].eats_cur++;
 	push_back(p, idx);
 	pthread_mutex_unlock(&(p->for_t_philo));
 	msleep(p, p->time_eat);
 	put_fork(p, idx);
-	sleep_think(p, idx);
+	return (0);
 }
 
-void	sleep_think(t_philo *p, int idx)
+int	sleep_think(t_philo *p, int idx)
 {
 	if (checker(p))
-		return ;
+		return (1);
 	printf("%d %d is sleeping\n", get_time(p), idx);
 	msleep(p, p->time_sleep);
 	if (checker(p))
-		return ;
+		return (1);
 	printf("%d %d is thinking\n", get_time(p), idx);
-	eat(p, idx);
+	return (0);
 }
