@@ -33,7 +33,7 @@ test_one ()
 {
     ("$2/$1/$1" 4 310 200 100 > "./log_$1")&
     sleep 5
-    pkill $1
+    pkill $1 1>out 2>err
     output=$(grep died -m 1 "./log_$1" | awk '{print $NF}')
     if [ "$output" = "died" ];then
         echo "\e[92m[+] Test #1 Succeeded !\e[0m"
@@ -65,7 +65,7 @@ test_two ()
     done
     sleep 1
     if [ $error -eq 0 ];then
-        pkill $1
+        pkill $1 1>out 2>err
         echo "\r\e[92m[+] Test #2 Succeeded\e[0m"
     fi
 }
@@ -78,6 +78,7 @@ test_three ()
     error=0
     while [ $i -lt 180 ];do
         printf "\r[%d...]" $i
+		echo "pgrep $1 > /dev/null"
         pgrep $1 > /dev/null
         if [ "$?" -ne 0 ];then
             echo "\r\e[91m[+] Test #3 Failed\e[0m"
@@ -90,7 +91,7 @@ test_three ()
     done
     sleep 1
     if [ $error -eq 0 ];then
-        pkill $1
+        pkill $1 1>out 2>err
         echo "\r\e[92m[+] Test #3 Succeeded\e[0m"
     fi
 }
@@ -111,7 +112,7 @@ test_four ()
     else
         echo "\t\e[91m[+] Test #4-$5 Failed\e[0m"
         error_log $1 "Test #4" "Given 4 410 200 200 $3 arguments to $1, $1 should stop !"
-        pkill $1
+        pkill $1 1>out 2>err
     fi
     rm -rf "./log_$1"
 }
@@ -144,7 +145,7 @@ test_five ()
         else
             printf "\r\e[91m[+] Test #5 Failed\e[0m\n"
             error_log $1 "Test #5" "Given 2 60 60 60 arguments to $1, a philosopher should die !"
-            pkill $1
+            pkill $1 1>out 2>err
             break
         fi
         i=$(( $i + 1 ))
@@ -166,7 +167,7 @@ test_six ()
         printf "\r\e[91m[+] Test #6 Failed\e[0m\n"
         error_log $1 "Test #6" "Given 10 410 200 200 arguments to $1, 10 processes should be forked, each process for a philosopher !"
     fi
-    pkill $1
+    pkill $1 1>out 2>err
 }
 
 if [ "$2" -eq 1 -o "$2" -eq 0 ];then
@@ -180,12 +181,12 @@ if [ "$2" -eq 1 -o "$2" -eq 0 ];then
         echo "\n[+] There's a problem while compiling $target, please recheck your inputs"
         exit
     fi
-
+	test_three $target $1
     test_one $target $1
 
     test_two $target $1
 
-    test_three $target $1
+    
 
     echo "\e[94m[+] Test #4 on progress, please wait...\e[0m"
     test_four $target $1 7 28 1
