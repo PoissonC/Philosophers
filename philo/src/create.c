@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 18:32:46 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/27 19:43:34 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/28 17:22:10 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,17 @@ int	create_forks(t_philo *p)
 
 int	create_men(t_philo *p)
 {
+	if (pthread_mutex_init(&(p->move), NULL))
+	{
+		destroy_all(p);
+		return (1);
+	}
+	if (pthread_mutex_init(&(p->check), NULL))
+	{
+		pthread_mutex_destroy(&(p->move));
+		destroy_all(p);
+		return (1);
+	}
 	p->philos = malloc(sizeof(t_men) * p->philo_num);
 	p->m = malloc(sizeof(t_manage) * p->philo_num);
 	if (!p->philos || !p->m)
@@ -49,21 +60,23 @@ int	start_philos(t_philo *p)
 	int	i;
 
 	i = 0;
-	pthread_mutex_lock(&(p->for_t_philo));
+	pthread_mutex_lock(&(p->move));
 	while (i < p->philo_num)
 	{
 		p->m[i].die_time = p->time_die;
 		p->m[i].idx = i;
-		p->philos[i].eats_cur = 0;
+		p->philos[i].cur = 0;
 		p->philos[i].check = 0;
 		if (pthread_create(&(p->philos[i].thr), NULL, philos, p) != 0)
 		{
 			p->is_end = 1;
+			pthread_mutex_destroy(&(p->move));
+			pthread_mutex_destroy(&(p->check));
 			destroy_all(p);
 			return (1);
 		}
 		i++;
 	}
-	pthread_mutex_unlock(&(p->for_t_philo));
+	pthread_mutex_unlock(&(p->move));
 	return (0);
 }

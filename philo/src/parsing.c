@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:36:12 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/27 16:20:18 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/28 16:32:48 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ int	parsing(t_philo *p, char **input, int argc)
 	else if (argc == 5)
 		p->times_eat = -1;
 	gettimeofday(&(p->start_tv), NULL);
-	if (pthread_mutex_init(&(p->for_t_philo), NULL) != 0)
-		return (1);
 	if (create_forks(p))
 		return (1);
 	if (create_men(p))

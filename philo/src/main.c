@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:34:12 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/28 14:14:44 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/28 17:35:44 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,32 +27,43 @@ int	main(int argc, char **argv)
 		pthread_join(p.philos[i].thr, NULL);
 		i++;
 	}
+	pthread_mutex_destroy(&(p.move));
+	pthread_mutex_destroy(&(p.check));
 	destroy_all(&p);
 	return (0);
 }
 
-void	*philos(void *philo)
+static int	get_idx(t_philo *p)
 {
 	static int	i;
+
+	pthread_mutex_lock(&(p->move));
+	return (i++);
+}
+
+void	*philos(void *philo)
+{
 	int			idx;
 	t_philo		*p;
 
 	p = philo;
-	pthread_mutex_lock(&(p->for_t_philo));
-	idx = i++;
-	pthread_mutex_unlock(&(p->for_t_philo));
+	idx = get_idx(p);
+	pthread_mutex_unlock(&(p->move));
 	if (idx & 1)
-		usleep(p->time_eat * 500);
+		usleep(50);
 	while (1)
 	{
 		if (eat(p, idx))
 			return (NULL);
-		if (p->philos[idx].eats_cur >= p->times_eat && !p->philos[idx].check)
+		if (p->times_eat != -1)
 		{
-			pthread_mutex_lock(&(p->for_t_philo));
-			p->fini_num++;
-			pthread_mutex_unlock(&(p->for_t_philo));
-			p->philos[idx].check = 1;
+			if (p->philos[idx].cur >= p->times_eat && !p->philos[idx].check)
+			{
+				pthread_mutex_lock(&(p->check));
+				p->fini_num++;
+				pthread_mutex_unlock(&(p->check));
+				p->philos[idx].check = 1;
+			}
 		}
 		if (sleep_think(p, idx))
 			return (NULL);

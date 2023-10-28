@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:14:06 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/27 19:42:58 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/28 17:21:50 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 typedef struct s_men
 {
 	pthread_t	thr;
-	int			eats_cur;
+	int			cur;
 	int			check;
 }				t_men;
 
@@ -42,7 +42,8 @@ typedef struct s_philo
 	int				is_end;
 	struct timeval	start_tv;
 	pthread_mutex_t	*fork;
-	pthread_mutex_t	for_t_philo;
+	pthread_mutex_t	move;
+	pthread_mutex_t	check;
 	t_men			*philos;
 }			t_philo;
 

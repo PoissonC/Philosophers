@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:49:40 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/27 20:16:28 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/28 17:20:29 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 static void	wait_to_die(t_philo *p)
 {
-	pthread_mutex_lock(&(p->for_t_philo));
 	printf("%d %d died\n", p->time_die, 0);
+	pthread_mutex_lock(&(p->check));
 	p->is_end = 1;
-	pthread_mutex_unlock(&(p->for_t_philo));
+	pthread_mutex_unlock(&(p->check));
 }
 
 int	get_fork_edge(t_philo *p, int idx)
@@ -68,17 +68,11 @@ int	get_fork_mid(t_philo *p, int idx)
 void	msleep(t_philo *p, int m_s)
 {
 	int	start;
-	int	i;
 
-	i = 1;
 	start = get_time(p);
 	while ((get_time(p) - start) < m_s)
 	{
-		if ((get_time(p) - start) > 100 * i)
-		{
-			checker(p);
-			i++;
-		}
+		checker(p);
 		usleep(100);
 	}
 }
