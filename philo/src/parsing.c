@@ -3,53 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yu <yu@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:36:12 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/25 11:43:55 by yu               ###   ########.fr       */
+/*   Updated: 2023/10/27 16:20:18 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static size_t	skipzero(char **input, int i[])
+static size_t	skipzero(char **input, int i)
 {
 	size_t	len;
 	size_t	j;
 
-	len = ft_strlen(input[i[0]]);
+	len = ft_strlen(input[i]);
 	j = 0;
-	if (input[i[0]][0] == '-' || input[i[0]][0] == '+')
-	{
-		if (input[i[0]][0] == '-')
-			i[1] = 1;
+	if (input[i][0] == '+')
 		j++;
-	}
-	while (j < len && input[i[0]][j] == '0')
+	while (j < len && input[i][j] == '0')
 	{
 		j++;
 	}
-	i[2] = (int)j;
 	return (len - j);
 }
 
 static int	isover(char **input, int len)
 {
-	int		i[3];
+	int	i;
+	int	num_digit;
 
-	i[0] = -1;
-	while (++i[0] < len)
+	i = -1;
+	while (++i < len)
 	{
-		i[1] = 0;
-		len = skipzero(input, i);
-		if (len > 11)
+		num_digit = skipzero(input, i);
+		if (num_digit > 6)
 			return (1);
-		if (len == 10 && i[1] == 1)
-			if (ft_strncmp(input[i[0]] + i[2], "2147483648", 11) > 0)
-				return (1);
-		if (len == 10 && i[1] == 0)
-			if (ft_strncmp(input[i[0]] + i[2], "2147483647", 11) > 0)
-				return (1);
 	}
 	return (0);
 }
@@ -75,13 +64,16 @@ static int	ckdigit(char **input, int len)
 	return (0);
 }
 
-static void	init(t_philo *p)
+static void	init(t_philo *p, char **input)
 {
 	p->fini_num = 0;
 	p->is_end = 0;
 	p->m = NULL;
 	p->philos = NULL;
-	gettimeofday(&(p->start_tv), NULL);
+	p->philo_num = ft_atoi(input[0]);
+	p->time_die = ft_atoi(input[1]);
+	p->time_eat = ft_atoi(input[2]);
+	p->time_sleep = ft_atoi(input[3]);
 }
 
 int	parsing(t_philo *p, char **input, int argc)
@@ -90,15 +82,12 @@ int	parsing(t_philo *p, char **input, int argc)
 		return (1);
 	if (isover(input + 1, argc - 1))
 		return (1);
-	p->philo_num = ft_atoi(input[1]);
-	p->time_die = ft_atoi(input[2]);
-	p->time_eat = ft_atoi(input[3]);
-	p->time_sleep = ft_atoi(input[4]);
+	init(p, input + 1);
 	if (argc == 6)
 		p->times_eat = ft_atoi(input[5]);
 	else if (argc == 5)
 		p->times_eat = -1;
-	init(p);
+	gettimeofday(&(p->start_tv), NULL);
 	if (pthread_mutex_init(&(p->for_t_philo), NULL) != 0)
 		return (1);
 	if (create_forks(p))

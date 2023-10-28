@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yu <yu@student.42.fr>                      +#+  +:+       +#+        */
+/*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:34:12 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/26 11:07:30 by yu               ###   ########.fr       */
+/*   Updated: 2023/10/28 14:14:44 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,13 @@ void	*philos(void *philo)
 	{
 		if (eat(p, idx))
 			return (NULL);
+		if (p->philos[idx].eats_cur >= p->times_eat && !p->philos[idx].check)
+		{
+			pthread_mutex_lock(&(p->for_t_philo));
+			p->fini_num++;
+			pthread_mutex_unlock(&(p->for_t_philo));
+			p->philos[idx].check = 1;
+		}
 		if (sleep_think(p, idx))
 			return (NULL);
 	}
