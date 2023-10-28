@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 18:23:48 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/28 17:22:03 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/28 20:17:39 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,13 @@ int	eat(t_philo *p, int idx)
 {
 	pthread_mutex_lock(&(p->move));
 	if (p->philos[idx].check == 0)
+	{
 		if (get_fork(p, idx) == 1)
 		{
 			pthread_mutex_unlock(&(p->move));
 			return (1);
 		}
+	}
 	pthread_mutex_unlock(&(p->move));
 	if (checker(p))
 		return (1);
