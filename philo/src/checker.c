@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 18:26:15 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/28 17:33:38 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/30 17:59:11 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	checker(t_philo *p)
 	}
 	if (get_time(p) > p->m[0].die_time)
 	{
-		printf("%d %d died\n", get_time(p), p->m[0].idx);
+		printf("%d %d died\n", p->m[0].die_time, p->m[0].idx);
 		p->is_end = 1;
 		pthread_mutex_unlock(&(p->check));
 		return (1);

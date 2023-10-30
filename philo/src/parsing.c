@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:36:12 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/30 15:02:19 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/30 18:22:45 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ static int	ckdigit(char **input, int len)
 
 static void	init(t_philo *p, char **input)
 {
+	struct timeval	tv;
+
 	p->fini_num = 0;
 	p->is_end = 0;
 	p->m = NULL;
@@ -74,6 +76,8 @@ static void	init(t_philo *p, char **input)
 	p->time_die = ft_atoi(input[1]);
 	p->time_eat = ft_atoi(input[2]);
 	p->time_sleep = ft_atoi(input[3]);
+	gettimeofday(&tv, NULL);
+	p->start_time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 }
 
 int	parsing(t_philo *p, char **input, int argc)

@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:14:06 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/30 15:02:24 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/30 18:19:45 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ typedef struct s_philo
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	move;
 	pthread_mutex_t	check;
-	pthread_mutex_t	time;
-	int				timer;
+	int				start_time;
 	t_men			*philos;
 }			t_philo;
 
@@ -84,6 +83,4 @@ void	*philos(void *philo);
 //action.c
 int		eat(t_philo *p, int idx);
 int		sleep_think(t_philo *p, int idx);
-int		get_fork(t_philo *p, int idx);
-void	put_fork(t_philo *p, int idx);
 #endif

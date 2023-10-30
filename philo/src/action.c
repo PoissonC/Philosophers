@@ -6,13 +6,13 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 18:23:48 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/30 16:54:01 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/30 18:42:11 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	get_fork(t_philo *p, int idx)
+static int	get_fork(t_philo *p, int idx)
 {
 	if (idx == p->philo_num - 1)
 	{
@@ -27,7 +27,7 @@ int	get_fork(t_philo *p, int idx)
 	return (0);
 }
 
-void	put_fork(t_philo *p, int idx)
+static void	put_fork(t_philo *p, int idx)
 {
 	if (idx == p->philo_num - 1)
 	{

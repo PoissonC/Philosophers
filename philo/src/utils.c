@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:49:40 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/30 15:25:50 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/30 18:43:30 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	wait_to_die(t_philo *p)
 {
+	msleep(p, p->time_die);
 	printf("%d %d died\n", p->time_die, 0);
 	pthread_mutex_lock(&(p->check));
 	p->is_end = 1;
@@ -71,18 +72,15 @@ void	msleep(t_philo *p, int m_s)
 
 	start = get_time(p);
 	while ((get_time(p) - start) < m_s)
-	{
-		checker(p);
-		usleep(300);
-	}
+		usleep(200);
 }
 
 int	get_time(t_philo *p)
 {
-	int	tmp;
+	struct timeval	tv;
+	int				t;
 
-	pthread_mutex_lock(&(p->time));
-	tmp = p->timer;
-	pthread_mutex_unlock(&(p->time));
-	return (tmp);
+	gettimeofday(&tv, NULL);
+	t = (tv.tv_sec * 1000) + (tv.tv_usec / 1000) - p->start_time;
+	return (t);
 }
