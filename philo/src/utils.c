@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:49:40 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/28 17:20:29 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/30 15:25:50 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,23 +73,16 @@ void	msleep(t_philo *p, int m_s)
 	while ((get_time(p) - start) < m_s)
 	{
 		checker(p);
-		usleep(100);
+		usleep(300);
 	}
 }
 
 int	get_time(t_philo *p)
 {
-	struct timeval	tv;
-	int				t;
+	int	tmp;
 
-	gettimeofday(&tv, 0);
-	t = (tv.tv_sec - p->start_tv.tv_sec) * 1000 + \
-	(tv.tv_usec - p->start_tv.tv_usec) / 1000;
-	if (t < 0)
-	{
-		gettimeofday(&(p->start_tv), 0);
-		return (0);
-	}
-	else
-		return (t);
+	pthread_mutex_lock(&(p->time));
+	tmp = p->timer;
+	pthread_mutex_unlock(&(p->time));
+	return (tmp);
 }

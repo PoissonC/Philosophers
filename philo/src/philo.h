@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:14:06 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/28 17:21:50 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/30 15:02:24 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,11 @@ typedef struct s_philo
 	int				times_eat;
 	t_manage		*m;
 	int				is_end;
-	struct timeval	start_tv;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	move;
 	pthread_mutex_t	check;
+	pthread_mutex_t	time;
+	int				timer;
 	t_men			*philos;
 }			t_philo;
 

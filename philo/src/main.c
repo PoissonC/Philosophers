@@ -6,19 +6,43 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:34:12 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/28 17:35:44 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/30 16:53:40 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+static void	*timer(void *philo)
+{
+	t_philo		*p;
+
+	p = philo;
+	p->timer = 0;
+	while (1)
+	{
+		usleep(1000);
+		pthread_mutex_lock(&(p->time));
+		p->timer++;
+		pthread_mutex_unlock(&(p->time));
+	}
+}
+
 int	main(int argc, char **argv)
 {
-	t_philo	p;
-	int		i;
+	t_philo		p;
+	int			i;
+	pthread_t	thr;
 
 	if (argc != 6 && argc != 5)
 		return (1);
+	if (pthread_mutex_init(&(p.time), NULL) != 0)
+		return (1);
+	if (pthread_create(&thr, NULL, timer, &p) != 0)
+	{
+		pthread_mutex_destroy(&(p.time));
+		return (1);
+	}
+	pthread_detach(thr);
 	if (parsing(&p, argv, argc))
 		return (1);
 	i = 0;
@@ -27,8 +51,6 @@ int	main(int argc, char **argv)
 		pthread_join(p.philos[i].thr, NULL);
 		i++;
 	}
-	pthread_mutex_destroy(&(p.move));
-	pthread_mutex_destroy(&(p.check));
 	destroy_all(&p);
 	return (0);
 }
@@ -50,7 +72,7 @@ void	*philos(void *philo)
 	idx = get_idx(p);
 	pthread_mutex_unlock(&(p->move));
 	if (idx & 1)
-		usleep(50);
+		msleep(p, p->time_eat - 50);
 	while (1)
 	{
 		if (eat(p, idx))

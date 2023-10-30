@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 18:32:46 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/28 17:22:10 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/30 14:57:54 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,15 @@ int	create_men(t_philo *p)
 {
 	if (pthread_mutex_init(&(p->move), NULL))
 	{
-		destroy_all(p);
+		destroy_forks(p, p->philo_num);
+		pthread_mutex_destroy(&(p->time));
 		return (1);
 	}
 	if (pthread_mutex_init(&(p->check), NULL))
 	{
 		pthread_mutex_destroy(&(p->move));
-		destroy_all(p);
+		pthread_mutex_destroy(&(p->time));
+		destroy_forks(p, p->philo_num);
 		return (1);
 	}
 	p->philos = malloc(sizeof(t_men) * p->philo_num);
@@ -70,8 +72,6 @@ int	start_philos(t_philo *p)
 		if (pthread_create(&(p->philos[i].thr), NULL, philos, p) != 0)
 		{
 			p->is_end = 1;
-			pthread_mutex_destroy(&(p->move));
-			pthread_mutex_destroy(&(p->check));
 			destroy_all(p);
 			return (1);
 		}

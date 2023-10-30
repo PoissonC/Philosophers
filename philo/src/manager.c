@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 20:02:46 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/28 17:13:38 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/30 14:56:41 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ void	destroy_forks(t_philo *p, int nums)
 void	destroy_all(t_philo *p)
 {
 	destroy_forks(p, p->philo_num);
+	pthread_mutex_destroy(&(p->move));
+	pthread_mutex_destroy(&(p->time));
+	pthread_mutex_destroy(&(p->check));
 	if (p->m)
 	{
 		free(p->m);

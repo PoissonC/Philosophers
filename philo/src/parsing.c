@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 14:36:12 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/28 16:32:48 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/10/30 15:02:19 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int	parsing(t_philo *p, char **input, int argc)
 		p->times_eat = ft_atoi(input[5]);
 	else if (argc == 5)
 		p->times_eat = -1;
-	gettimeofday(&(p->start_tv), NULL);
 	if (create_forks(p))
 		return (1);
 	if (create_men(p))
