@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 18:49:40 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/30 18:43:30 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/11/03 18:37:48 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	wait_to_die(t_philo *p)
 {
 	msleep(p, p->time_die);
-	printf("%d %d died\n", p->time_die, 0);
+	printf("%d %d died\n", p->time_die, 1);
 	pthread_mutex_lock(&(p->check));
 	p->is_end = 1;
 	pthread_mutex_unlock(&(p->check));
@@ -29,7 +29,7 @@ int	get_fork_edge(t_philo *p, int idx)
 		pthread_mutex_unlock(p->fork);
 		return (1);
 	}
-	printf("%d %d has taken a fork\n", get_time(p), idx);
+	printf("%d %d has taken a fork\n", get_time(p), idx + 1);
 	if (p->philo_num == 1)
 	{
 		wait_to_die(p);
@@ -42,7 +42,7 @@ int	get_fork_edge(t_philo *p, int idx)
 		pthread_mutex_unlock(p->fork + idx);
 		return (1);
 	}
-	printf("%d %d has taken a fork\n", get_time(p), idx);
+	printf("%d %d has taken a fork\n", get_time(p), idx + 1);
 	return (0);
 }
 
@@ -54,7 +54,7 @@ int	get_fork_mid(t_philo *p, int idx)
 		pthread_mutex_unlock(p->fork + idx);
 		return (1);
 	}
-	printf("%d %d has taken a fork\n", get_time(p), idx);
+	printf("%d %d has taken a fork\n", get_time(p), idx + 1);
 	pthread_mutex_lock(p->fork + idx + 1);
 	if (checker(p))
 	{
@@ -62,7 +62,7 @@ int	get_fork_mid(t_philo *p, int idx)
 		pthread_mutex_unlock(p->fork + idx + 1);
 		return (1);
 	}
-	printf("%d %d has taken a fork\n", get_time(p), idx);
+	printf("%d %d has taken a fork\n", get_time(p), idx + 1);
 	return (0);
 }
 
