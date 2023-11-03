@@ -1,29 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcmp.c                                        :+:      :+:    :+:   */
+/*   ft_tools.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/21 11:25:11 by ychen2            #+#    #+#             */
-/*   Updated: 2023/09/22 20:55:35 by ychen2           ###   ########.fr       */
+/*   Created: 2023/07/18 12:36:26 by ychen2            #+#    #+#             */
+/*   Updated: 2023/11/03 18:32:25 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "philo.h"
 
-int	ft_memcmp(const void *s1, const void *s2, size_t n)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	int	i;
+	int	ans;
+
+	i = 0;
+	while ((s1[i] != '\0' || s2[i] != '\0') && n > 0)
+	{
+		ans = (unsigned char)(s1[i]) - (unsigned char)(s2[i]);
+		if (ans != 0)
+		{
+			return (ans);
+		}
+		i++;
+		n--;
+	}
+	return (0);
+}
+
+int	ft_isdigit(int c)
+{
+	return (c >= '0' && c <= '9');
+}
+
+size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
-	if (n == 0)
-		return (0);
 	i = 0;
-	while (i < n)
-	{
-		if (((unsigned char *)s1)[i] != ((unsigned char *)s2)[i])
-			return (((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]);
+	while (s[i] != '\0')
 		i++;
-	}
-	return (0);
+	return (i);
 }

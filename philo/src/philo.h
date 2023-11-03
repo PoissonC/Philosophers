@@ -6,16 +6,17 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:14:06 by ychen2            #+#    #+#             */
-/*   Updated: 2023/10/30 18:19:45 by ychen2           ###   ########.fr       */
+/*   Updated: 2023/11/03 18:32:03 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
-# include "../libft/libft.h"
 # include <sys/time.h>
 # include <pthread.h>
 # include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
 
 typedef struct s_men
 {
@@ -55,6 +56,11 @@ enum e_act
 	THINK,
 	DIE
 }	t_act;
+
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_atoi(const char *str);
+int		ft_isdigit(int c);
+size_t	ft_strlen(const char *s);
 //parsing.c
 int		parsing(t_philo *p, char **input, int argc);
 
