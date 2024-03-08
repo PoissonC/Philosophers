@@ -6,7 +6,7 @@
 /*   By: ychen2 <ychen2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 15:14:06 by ychen2            #+#    #+#             */
-/*   Updated: 2023/11/03 18:32:03 by ychen2           ###   ########.fr       */
+/*   Updated: 2024/03/08 10:28:58 by ychen2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_philo
 	t_men			*philos;
 }			t_philo;
 
-enum e_act
+typedef enum e_act
 {
 	TAKE_FORK = 1,
 	EAT,
